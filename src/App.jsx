@@ -1,5 +1,7 @@
 import './App.css'
 
+const publicAsset = (fileName) => `${import.meta.env.BASE_URL}${fileName}`
+
 const characters = [
   {
     name: '格蕾丝·阿什克罗夫特',
@@ -18,7 +20,7 @@ const characters = [
     role: 'DSO 资深特工',
     mark: 'LK',
     tone: 'steel',
-    image: '/Leon%201.jpg',
+    image: publicAsset('Leon%201.jpg'),
     link: 'https://en.wikipedia.org/wiki/Leon_S._Kennedy',
     featured: true,
     description:
@@ -127,7 +129,7 @@ function App() {
       <main id="top">
         <section className="hero" aria-labelledby="page-title">
           <div className="hero-media" aria-hidden="true">
-            <img src="/re9_hero.gif.gif" alt="" />
+            <img src={publicAsset('re9_hero.gif.gif')} alt="" />
           </div>
           <div className="hero-copy">
             <p className="eyebrow">BIOHAZARD INCIDENT ARCHIVE · 2026</p>
