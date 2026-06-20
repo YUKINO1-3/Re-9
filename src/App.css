@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Jim+Nightshade&display=swap');
+
 @keyframes reveal {
   from {
     opacity: 0;
@@ -66,6 +68,22 @@
 
 .site-header nav a:hover {
   color: #fff;
+}
+
+.header-status {
+  margin: 0;
+  color: #696a67;
+  font-family: "Courier New", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+}
+
+.landing-view .hero {
+  min-height: 100svh;
+}
+
+.archive-main .characters-section {
+  padding-top: 150px;
 }
 
 .hero {
@@ -264,6 +282,9 @@
 }
 
 .portrait {
+  --portrait-position-x: 52%;
+  --portrait-position-y: 50%;
+  --portrait-offset-x: 0%;
   position: relative;
   display: grid;
   overflow: hidden;
@@ -307,7 +328,35 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 52% center;
+  object-position:
+    calc(var(--portrait-position-x) + var(--portrait-offset-x))
+    var(--portrait-position-y);
+}
+
+.portrait img.nathan-portrait {
+  --portrait-position-x: 50%;
+  --portrait-position-y: 0%;
+  --portrait-offset-x: 60%;
+}
+
+.portrait img.grace-portrait {
+  --portrait-position-x: 58%;
+  --portrait-position-y: 50%;
+}
+
+.portrait img.alyssa-portrait {
+  --portrait-position-x: 50%;
+  --portrait-position-y: 28%;
+}
+
+.portrait img.emily-portrait {
+  --portrait-position-x: 50%;
+  --portrait-position-y: 18%;
+}
+
+.portrait img.victor-portrait {
+  --portrait-position-x: 50%;
+  --portrait-position-y: 12%;
 }
 
 .portrait i {
@@ -351,19 +400,13 @@
 }
 
 .character-info h2 {
-  margin: 0;
+  margin: 0 0 24px;
   color: #eee9df;
-  font-family: "Noto Serif SC", "Songti SC", SimSun, serif;
-  font-size: 1.7rem;
-  font-weight: 500;
-}
-
-.english-name {
-  margin: 5px 0 24px;
-  color: #676a68;
-  font-family: "Courier New", monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+  font-family: "Jim Nightshade", cursive;
+  font-size: 2.45rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
 }
 
 .description {
