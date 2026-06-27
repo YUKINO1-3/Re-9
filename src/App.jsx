@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
 const publicAsset = (fileName) => `${import.meta.env.BASE_URL}${fileName}`
-const getViewFromHash = () => {
-  if (window.location.hash === '#characters') return 'characters'
-  if (window.location.hash === '#story') return 'story'
-  if (/^#story-\d{2}$/.test(window.location.hash)) return 'story-detail'
+const getViewFromHash = (hash) => {
+  if (hash === '#characters') return 'characters'
+  if (/^#character-[a-z-]+$/.test(hash)) return 'character-detail'
+  if (hash === '#story') return 'story'
+  if (/^#story-\d{2}$/.test(hash)) return 'story-detail'
   return 'landing'
 }
 
@@ -182,6 +183,7 @@ const storyChapters = [
 
 const characters = [
   {
+    slug: 'grace-ashcroft',
     name: 'Grace Ashcroft',
     englishName: 'Grace Ashcroft',
     role: 'FBI 情报分析员',
@@ -195,8 +197,48 @@ const characters = [
     description:
       '拥有出色的专注力、洞察力与推理能力。母亲的死亡让她变得内向，并把自己埋进工作之中。一次发生在废弃酒店的离奇命案，迫使她独自走回八年前的阴影。',
     tags: ['核心主角', '推理分析', '生存恐怖'],
+    facts: [
+      ['年龄', '25 岁（2026 年）'],
+      ['出生年份', '约 2001 年'],
+      ['国籍', '美国'],
+      ['所属', '美国联邦调查局（FBI）'],
+      ['职位', '情报／技术分析员'],
+      ['首次登场', '《生化危机：安魂曲》（2026）'],
+      ['状态', '存活'],
+    ],
+    profile: [
+      {
+        title: '身世与成长',
+        paragraphs: [
+          'Grace 幼年失去亲生父母，后来由 Oswell E. Spencer 收养。Spencer 晚年开始反思安布雷拉造成的灾难，并将 Grace 交给调查记者 Alyssa Ashcroft 抚养。Grace 因此沿用 Ashcroft 姓氏，把 Alyssa 视为自己的母亲。',
+          'Alyssa 是 1998 年浣熊市事件的幸存者。她没有因为逃离灾区而停止调查，反而继续追查安布雷拉、政府掩盖和病毒研究的遗产。Grace 在这样的家庭中长大，却长期不知道自己的收养经历以及她与 Spencer 之间的联系。',
+        ],
+      },
+      {
+        title: '母亲之死与 FBI 生涯',
+        paragraphs: [
+          '2018 年，Alyssa 在雷恩伍德酒店遇害。母亲的死亡令 Grace 变得封闭、焦虑，她把精力投入工作，以分析和秩序对抗无法解决的创伤。她随后进入 FBI，成为擅长文件研判、现场信息整合和演绎推理的情报分析员。',
+          'Grace 并非传统意义上的战斗型特工。她的优势是专注、观察和推理，面对生化灾害时则必须依靠有限资源、环境判断与潜行求生。这种脆弱性也使她成为与 Leon 完全不同的主角。',
+        ],
+      },
+      {
+        title: '雷恩伍德事件',
+        paragraphs: [
+          '2026 年，FBI 主管 Nathan Dempsy 派 Grace 调查一连串异常死亡。最新现场正是母亲遇害的雷恩伍德酒店。Grace 在酒店找到 Alyssa 留下的数据盘，却随即遭前安布雷拉研究员 Victor Gideon 绑架，并被转移到罗兹山慢性护理中心。',
+          '逃亡途中，她发现并保护实验受害者 Emily。随后，Alyssa 的资料揭开 Grace 的真实身世，也让她识破所谓“Spencer 克隆体”的谎言。Grace 最终理解 Elpis 并非病毒武器，而是广谱抗病毒制剂；她以密码“Hope”开启项目，治愈 Leon，并在事件结束后承担起照顾 Emily 的责任。',
+        ],
+      },
+      {
+        title: '性格与能力',
+        paragraphs: [
+          'Grace 内向谨慎，遭遇威胁时会表现出真实的恐惧，但她并不缺乏勇气。她的成长不在于突然成为成熟战士，而在于学会带着恐惧行动，并从被动求生转向主动保护他人。',
+          '她擅长证据分析、机关解读和资源规划，能利用感染者血液制作弹药、道具及特殊注射剂。她与 Leon 的经验差异构成故事核心：Leon 代表经历过无数灾难的幸存者，Grace 则代表第一次直面噩梦的普通人。',
+        ],
+      },
+    ],
   },
   {
+    slug: 'leon-s-kennedy',
     name: 'Leon S. Kennedy',
     englishName: 'Leon S. Kennedy',
     role: 'DSO 资深特工',
@@ -209,8 +251,48 @@ const characters = [
     description:
       '浣熊市事件的幸存者之一。凭借坚定的正义感与丰富的实战经验，他多年来一直奋战在生化恐怖事件的最前线，如今再次受命调查美国中西部的连环死亡事件。',
     tags: ['核心主角', '反生化专家', '动作战斗'],
+    facts: [
+      ['年龄', '49 岁（2026 年）'],
+      ['出生年份', '1977 年'],
+      ['国籍', '美国'],
+      ['所属', 'DSO（安全行动司）'],
+      ['职业', '联邦特工'],
+      ['首次登场', '《生化危机 2》（1998）'],
+      ['状态', '存活'],
+    ],
+    profile: [
+      {
+        title: '浣熊市的新任警员',
+        paragraphs: [
+          'Leon 于 1977 年出生。1998 年，21 岁的他作为新任警员前往浣熊市报到，却在抵达首日撞上全面失控的 T 病毒疫情。他与 Claire Redfield 分头求生，并保护年幼的 Sherry Birkin 逃离城市。',
+          '这一天奠定了 Leon 此后的人生方向。他亲眼见证安布雷拉实验的后果、政府的封锁以及普通人的死亡，也从一名缺乏实战经验的警员变成浣熊市事件少数幸存者之一。',
+        ],
+      },
+      {
+        title: '从特工到反生化专家',
+        paragraphs: [
+          '事件后，Leon 被美国政府吸收并接受高强度训练。他先后处理总统女儿 Ashley Graham 绑架案、东斯拉夫生化武器危机、Tall Oaks 疫情及多起跨国生化恐怖事件，长期与 Ada Wong、Chris Redfield、Claire 和 Sherry 等人产生交集。',
+          '持续近三十年的行动使他具备枪械、近身格斗、战术判断和生化兵器应对能力。他保留强烈的正义感和保护平民的本能，但浣熊市以及一次次未能挽救所有人的经历，也在他身上留下明显的疲惫与创伤。',
+        ],
+      },
+      {
+        title: '2026 年调查',
+        paragraphs: [
+          '成为 DSO 资深特工后，Leon 调查美国中西部的连续死亡事件。他发现受害者多为浣熊市幸存者，而自己也受到残留病毒变异引发的“浣熊市综合征”影响。身体恶化使这次任务同时成为对自身命运的追查。',
+          'Leon 追踪 Victor 进入罗兹山护理中心，并与 Grace 的调查线汇合。他最终深入浣熊市地下 ARK 设施，击败变异后的 Victor。Grace 使用 Elpis 清除其体内感染，使 Leon 从持续多年的病毒阴影中获得真正获救的可能。',
+        ],
+      },
+      {
+        title: '战斗方式与人物特质',
+        paragraphs: [
+          'Leon 能熟练使用手枪、霰弹枪等多种枪械，并以战斧、格挡、近战和临场夺取的敌方武器衔接战斗。他的装备管理和武器改装能力，体现了长期外勤行动形成的系统化经验。',
+          '他常以冷静和幽默缓解压力，却并非对恐惧麻木。Leon 的核心特质始终是即使清楚代价，仍选择进入危险区域救人；这也使他在 Grace 眼中既是强大的保护者，也是被过去长期困住的幸存者。',
+        ],
+      },
+    ],
   },
   {
+    slug: 'alyssa-ashcroft',
     name: 'Alyssa Ashcroft',
     englishName: 'Alyssa Ashcroft',
     role: '记者 / 浣熊市幸存者',
@@ -221,8 +303,48 @@ const characters = [
     description:
       '格蕾丝的母亲，也是一位意志坚定的调查记者。逃离浣熊市后，她没有停止追寻真相，而是继续调查安布雷拉留下的秘密。',
     tags: ['关键人物', '调查记者'],
+    facts: [
+      ['年龄', '约 48 岁（2018 年遇害时）'],
+      ['出生年份', '约 1970 年'],
+      ['国籍', '美国'],
+      ['职业', '调查记者'],
+      ['亲属', 'Grace Ashcroft（养女）'],
+      ['首次登场', '《生化危机：爆发》（2003）'],
+      ['状态', '已故（2018）'],
+    ],
+    profile: [
+      {
+        title: '调查记者',
+        paragraphs: [
+          'Alyssa 是一名意志强硬、行动果断的调查记者。她善于开锁、搜集证据并追踪企业和公共机构不愿公开的事实。早在浣熊市灾难前，她便接触过当地涉及非法研究与权力寻租的线索。',
+          '她的职业本能并不只是好奇心，而是对权力问责的坚持。面对威胁时，Alyssa 往往以尖锐态度掩饰压力，这种性格帮助她在灾难中保持行动能力，也让她在余生始终无法接受官方给出的简单结论。',
+        ],
+      },
+      {
+        title: '浣熊市幸存者',
+        paragraphs: [
+          '1998 年 T 病毒疫情席卷浣熊市时，Alyssa 与其他市民在医院、地下设施、大学等区域寻找出路。她不只是逃生，还沿途保留安布雷拉人体实验和病毒泄漏的证据。',
+          '城市最终遭到摧毁，Alyssa 成为确认存活的事件亲历者。逃离并未结束她的调查：她继续追查安布雷拉、政府和灾难掩盖之间的关系，让自己的记者生涯与浣熊市遗产永久绑定。',
+        ],
+      },
+      {
+        title: '成为 Grace 的母亲',
+        paragraphs: [
+          'Oswell E. Spencer 晚年将年幼的 Grace 托付给 Alyssa。她接纳这个失去原生家庭的孩子，让 Grace 使用自己的姓氏并以母女身份共同生活。她没有把 Spencer 的全部秘密告诉 Grace，可能是为了让孩子远离安布雷拉遗产。',
+          '作为母亲，Alyssa 的死亡对 Grace 造成了比任何案件都更深的创伤；作为记者，她留下的资料又成为 Grace 最终理解自己身世的关键。母女关系因此贯穿私人情感与整个阴谋调查。',
+        ],
+      },
+      {
+        title: '最后的调查与遗产',
+        paragraphs: [
+          'Alyssa 追踪 Spencer、Elpis 和 ARK 的线索来到雷恩伍德酒店，并提前保存数据盘。2018 年，她在酒店遭 Victor Gideon 杀害，案件此后八年未获真正解决。',
+          '数据盘中的采访证明 Grace 并非克隆体，也揭示 Elpis 的抗病毒性质。Alyssa 未能亲自公开真相，但她留下的证据最终阻止 Victor 和 Zeno 利用项目，并让二十八年前被掩盖的历史重新进入公众视野。',
+        ],
+      },
+    ],
   },
   {
+    slug: 'nathan-dempsy',
     name: 'Nathan Dempsy',
     englishName: 'Nathan Dempsy',
     role: 'FBI 主管',
@@ -234,8 +356,48 @@ const characters = [
     description:
       '格蕾丝在 FBI 的上司。他清楚格蕾丝仍被母亲之死困扰，却依然将近期连环死亡事件的调查任务交给了她。',
     tags: ['FBI', '任务委托人'],
+    facts: [
+      ['年龄', '官方未公开'],
+      ['出生年份', '官方未公开'],
+      ['国籍', '美国'],
+      ['所属', '美国联邦调查局（FBI）'],
+      ['职位', '主管特工'],
+      ['首次登场', '《生化危机：安魂曲》（2026）'],
+      ['状态', '在职'],
+    ],
+    profile: [
+      {
+        title: 'FBI 主管',
+        paragraphs: [
+          'Nathan Dempsy 是 Grace 在 FBI 的直属上司，负责统筹情报人员并分配调查任务。官方尚未公开他的出生年月、早期经历或具体晋升履历，因此这些项目在档案中保持空缺。',
+          '与直接进入生化灾区的行动人员不同，Nathan 的职责更接近案件管理：确认线索价值、调配分析资源，并在机构流程与现场需要之间做出判断。',
+        ],
+      },
+      {
+        title: '对 Grace 的态度',
+        paragraphs: [
+          'Nathan 知道 Alyssa 的死亡给 Grace 留下严重心理创伤，也清楚雷恩伍德酒店对她意味着什么。他没有隐瞒任务地点，并让 Grace 自己决定是否接手调查。',
+          '这种做法同时体现信任与风险：Grace 是最能理解 Alyssa 背景的人，却也是最可能被现场触发创伤的人。Nathan 最终选择相信她的专业判断，而不是只把她视为需要被保护的下属。',
+        ],
+      },
+      {
+        title: '连环死亡调查',
+        paragraphs: [
+          '2026 年，美国多地出现性质异常的死亡事件，受害者逐渐显露出与 1998 年浣熊市灾难的联系。雷恩伍德酒店发现新尸体后，Nathan 将 Grace 派往现场进行情报分析。',
+          '这项任务成为整个事件的入口：Grace 在酒店找到母亲留下的资料，也进入 Victor 预先设置的陷阱。Nathan 并非后续生化战斗的核心参与者，但他作出的派遣决定让被搁置八年的案件重新启动。',
+        ],
+      },
+      {
+        title: '人物定位',
+        paragraphs: [
+          'Nathan 代表危机初期仍按正常司法程序运作的机构视角。他掌握的信息有限，面对的最初只是连环死亡与废弃酒店现场，而非完整的安布雷拉遗产。',
+          '现有公开资料没有显示他具备生化研究或一线作战背景。与其补写未经证实的经历，本档案保留这些未知项，并将重点放在他与 Grace 的工作关系及案件触发作用上。',
+        ],
+      },
+    ],
   },
   {
+    slug: 'emily',
     name: 'Emily',
     englishName: 'Emily',
     role: '神秘少女',
@@ -248,8 +410,48 @@ const characters = [
     description:
       '格蕾丝在护理中心发现的少女。她面色苍白、身体异常消瘦，被困于危险设施之中的原因仍是一个谜。',
     tags: ['神秘人物', '护理中心'],
+    facts: [
+      ['年龄', '官方未公开（未成年）'],
+      ['出生年份', '官方未公开'],
+      ['实验编号', 'Subject 171'],
+      ['所在地点', '罗兹山慢性护理中心'],
+      ['身体状况', '失明／长期实验受害者'],
+      ['首次登场', '《生化危机：安魂曲》（2026）'],
+      ['状态', '获救并接受治疗'],
+    ],
+    profile: [
+      {
+        title: '护理中心的少女',
+        paragraphs: [
+          'Emily 是 Grace 在罗兹山慢性护理中心发现的失明少女。她面色异常苍白、身体消瘦，显然经历过长期拘禁、营养不足和实验伤害。官方未公开她的准确年龄、出生地及亲生家庭。',
+          '在设施记录中，她被称为 Subject 171。这个编号说明护理中心并非单纯收治患者，而是在持续管理一批被物化为实验材料的儿童。',
+        ],
+      },
+      {
+        title: '实验与身份谎言',
+        paragraphs: [
+          'Victor Gideon 延续安布雷拉式的人体实验，试图理解 Spencer 的意识转移研究和 Elpis 项目。Emily 与其他少女被卷入这一计划，并被 Zeno 描述为以 Grace 为模板制造的克隆体。',
+          'Alyssa 留下的资料最终证明，Grace 并非 Spencer 的成功克隆体，Victor 对项目基础的理解从一开始就是错误的。Emily 的真实来源仍有未公开部分，但她作为实验受害者的身份并不因此改变。',
+        ],
+      },
+      {
+        title: '与 Grace 的逃亡',
+        paragraphs: [
+          'Grace 在护理中心脱困后发现 Emily，并决定带她一起逃离。保护 Emily 使 Grace 从单纯寻找出口转向主动承担他人的生命，两人之间迅速建立起依赖关系。',
+          '逃亡中 Emily 遭受重创并发生病毒变异。Leon 为保护 Grace 和控制局势被迫制服她，这一幕让 Grace 误以为自己再次失去了重要的人，也成为 Victor 和 Zeno操纵她继续前往 ARK 的突破口。',
+        ],
+      },
+      {
+        title: '事件之后',
+        paragraphs: [
+          'Elpis 被确认是能够中和病毒型生化武器的广谱抗病毒制剂，而非 Victor 所期待的控制型病毒。正史结局中，Grace 使用这一成果治疗 Emily，使她从实验和变异造成的伤害中获救。',
+          'Grace 随后成为 Emily 的监护人。这一选择回应了 Alyssa 当年接纳 Grace 的经历：一个被阴谋夺走家庭的孩子，最终选择为另一个受害者提供新的家庭。',
+        ],
+      },
+    ],
   },
   {
+    slug: 'victor-gideon',
     name: 'Victor Gideon',
     englishName: 'Victor Gideon',
     role: '首要嫌疑人',
@@ -260,13 +462,54 @@ const characters = [
     description:
       '席卷美国的离奇死亡事件首要嫌疑人。据现有资料，他曾是安布雷拉公司的 T 病毒研究专家。',
     tags: ['前安布雷拉研究员', '危险人物'],
+    facts: [
+      ['年龄', '官方未公开'],
+      ['出生年份', '官方未公开'],
+      ['原所属', '安布雷拉公司'],
+      ['专业', 'T 病毒研究'],
+      ['身份', '连环死亡案首要嫌疑人'],
+      ['首次登场', '《生化危机：安魂曲》（2026）'],
+      ['状态', '已死亡（2026）'],
+    ],
+    profile: [
+      {
+        title: '前安布雷拉研究员',
+        paragraphs: [
+          'Victor Gideon 曾供职于安布雷拉公司，专攻 T 病毒相关研究。他掌握旧时代的病毒知识，却没有完整继承 Spencer 的核心资料；安布雷拉倒台后，他继续以残缺信息追逐其创始人的最终成果。',
+          '官方未公开 Victor 的出生年月、国籍和加入安布雷拉的具体时间。可以确认的是，他并未真正放弃公司的研究逻辑，而是把人体实验、病毒强化与生化兵器视为实现目标的合理手段。',
+        ],
+      },
+      {
+        title: '罗兹山实验',
+        paragraphs: [
+          'Victor 将罗兹山慢性护理中心变成秘密实验设施，利用员工、患者和被拘禁的少女研究 T 病毒变种、意识转移及可控生化兵器。The Girl、Emily 等个体都是这一体系的受害者。',
+          '当调查人员逼近时，他直接释放病毒感染设施中的平民，以制造混乱、销毁证据并延缓 Leon 的追踪。这种选择显示他与安布雷拉最极端的研究人员没有本质区别。',
+        ],
+      },
+      {
+        title: '对 Grace 的执念',
+        paragraphs: [
+          'Victor 得知 Spencer 曾收养一名孩子，便错误地认定 Grace 是意识转移实验的成功产物，并相信她本能地掌握开启 Elpis 的方法。他杀害 Alyssa、在酒店布置线索，并等待 Grace 被重新带入调查。',
+          '他需要 Grace 作为工具，却从未真正理解她的身世。Zeno 关于克隆体和终极病毒的叙述进一步强化了这一误判，使 Victor 的整个计划建立在对 Spencer 遗产的错误解读上。',
+        ],
+      },
+      {
+        title: 'ARK 与最终结局',
+        paragraphs: [
+          '所有线索最终汇聚到浣熊市地下 ARK 设施。Grace 通过 Alyssa 的数据盘确认密码“Hope”，并揭示 Elpis 实际是抗病毒制剂。这个真相否定了 Victor 对力量和控制的全部期待。',
+          'Victor 杀死 Zeno、启动 ARK 自毁，并发生类似 Nemesis 的大型变异。他最终在设施崩塌前被 Leon 击败。其结局延续了安布雷拉研究者反复出现的模式：试图驾驭病毒，最后却被自己的研究和执念吞噬。',
+        ],
+      },
+    ],
   },
 ]
 
 function CharacterCard({ character, index }) {
   return (
-    <article
+    <a
       className={`character-card ${character.featured ? 'featured' : ''}`}
+      href={`#character-${character.slug}`}
+      aria-label={`查看 ${character.name} 的完整人物档案`}
       style={{ '--delay': `${index * 70}ms` }}
     >
       <div className={`portrait portrait-${character.tone}`}>
@@ -288,23 +531,16 @@ function CharacterCard({ character, index }) {
         <p className="role">{character.role}</p>
         <h2>{character.name}</h2>
         <p className="description">{character.description}</p>
-        {character.link && (
-          <a
-            className="character-link"
-            href={character.link}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {character.linkLabel} <span aria-hidden="true">↗</span>
-          </a>
-        )}
+        <span className="character-link">
+          查阅完整人物档案 <span aria-hidden="true">→</span>
+        </span>
         <ul className="tags" aria-label="角色标签">
           {character.tags.map((tag) => (
             <li key={tag}>{tag}</li>
           ))}
         </ul>
       </div>
-    </article>
+    </a>
   )
 }
 
@@ -396,17 +632,20 @@ function MusicPlayer() {
 }
 
 function App() {
-  const [view, setView] = useState(getViewFromHash)
+  const [hash, setHash] = useState(() => window.location.hash)
+  const view = getViewFromHash(hash)
 
   useEffect(() => {
     const handleHashChange = () => {
-      setView(getViewFromHash())
+      const nextHash = window.location.hash
+      setHash(nextHash)
 
       if (
-        window.location.hash === '#home' ||
-        window.location.hash === '#story' ||
-        window.location.hash === '#characters' ||
-        /^#story-\d{2}$/.test(window.location.hash)
+        nextHash === '#home' ||
+        nextHash === '#story' ||
+        nextHash === '#characters' ||
+        /^#character-[a-z-]+$/.test(nextHash) ||
+        /^#story-\d{2}$/.test(nextHash)
       ) {
         window.scrollTo({ top: 0, behavior: 'auto' })
       }
@@ -417,15 +656,22 @@ function App() {
   }, [])
 
   const isCharacters = view === 'characters'
+  const isCharacterDetail = view === 'character-detail'
   const isStory = view === 'story'
   const isStoryDetail = view === 'story-detail'
   const isLanding = view === 'landing'
   const activeChapterIndex = isStoryDetail
     ? storyChapters.findIndex(
-        (chapter) => `#story-${chapter.number}` === window.location.hash,
+        (chapter) => `#story-${chapter.number}` === hash,
       )
     : -1
   const activeChapter = storyChapters[activeChapterIndex]
+  const activeCharacter = isCharacterDetail
+    ? characters.find((character) => `#character-${character.slug}` === hash)
+    : undefined
+  const activeCharacterIndex = activeCharacter
+    ? characters.findIndex((character) => character.slug === activeCharacter.slug)
+    : -1
 
   return (
     <div className={`page-shell ${isLanding ? 'landing-view' : 'archive-view'}`}>
@@ -438,9 +684,9 @@ function App() {
         {!isLanding ? (
           <nav aria-label="页面导航">
             <a
-              className={isCharacters ? 'active' : ''}
+              className={isCharacters || isCharacterDetail ? 'active' : ''}
               href="#characters"
-              aria-current={isCharacters ? 'page' : undefined}
+              aria-current={isCharacters || isCharacterDetail ? 'page' : undefined}
             >
               角色档案
             </a>
@@ -532,6 +778,100 @@ function App() {
               rel="noreferrer"
             >
               资料来源：CAPCOM 官方网站 ↗
+            </a>
+          </footer>
+        </>
+      )}
+
+      {isCharacterDetail && activeCharacter && (
+        <>
+          <main className="character-profile-page">
+            <section className="profile-hero">
+              <div className="profile-hero-copy">
+                <a className="back-link" href="#characters">
+                  ← 返回角色档案
+                </a>
+                <p className="eyebrow">
+                  CONFIDENTIAL / PERSONNEL FILE {String(activeCharacterIndex + 1).padStart(2, '0')}
+                </p>
+                <p className="role">{activeCharacter.role}</p>
+                <h1>{activeCharacter.name}</h1>
+                <p className="profile-intro">{activeCharacter.description}</p>
+                <p className="spoiler-warning">本档案包含人物完整经历与关键剧情剧透。</p>
+              </div>
+              <div className={`profile-portrait portrait portrait-${activeCharacter.tone}`}>
+                {activeCharacter.image ? (
+                  <img
+                    className={activeCharacter.imageClass}
+                    src={activeCharacter.image}
+                    alt={`${activeCharacter.name}角色肖像`}
+                  />
+                ) : (
+                  <span aria-hidden="true">{activeCharacter.mark}</span>
+                )}
+                <i />
+              </div>
+            </section>
+
+            <dl className="profile-facts" aria-label={`${activeCharacter.name}基本资料`}>
+              {activeCharacter.facts.map(([label, value]) => (
+                <div key={label}>
+                  <dt>{label}</dt>
+                  <dd>{value}</dd>
+                </div>
+              ))}
+            </dl>
+
+            <article className="chapter-detail profile-detail">
+              {activeCharacter.profile.map((section, index) => (
+                <section className="detail-section" key={section.title}>
+                  <div className="detail-number">
+                    FILE {String(index + 1).padStart(2, '0')}
+                  </div>
+                  <div>
+                    <h2>{section.title}</h2>
+                    {section.paragraphs.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </article>
+
+            <nav className="chapter-navigation" aria-label="人物档案导航">
+              {activeCharacterIndex > 0 ? (
+                <a href={`#character-${characters[activeCharacterIndex - 1].slug}`}>
+                  <span>上一份档案</span>
+                  {characters[activeCharacterIndex - 1].name}
+                </a>
+              ) : (
+                <span />
+              )}
+              {activeCharacterIndex < characters.length - 1 ? (
+                <a
+                  className="next-chapter"
+                  href={`#character-${characters[activeCharacterIndex + 1].slug}`}
+                >
+                  <span>下一份档案</span>
+                  {characters[activeCharacterIndex + 1].name}
+                </a>
+              ) : (
+                <a className="next-chapter" href="#characters">
+                  <span>档案结束</span>
+                  返回角色目录
+                </a>
+              )}
+            </nav>
+          </main>
+
+          <footer>
+            <p>非官方网站 · 完整人物档案</p>
+            <a
+              href="https://www.residentevil.com/requiem/en-asia/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              基础资料来源：CAPCOM 官方网站 ↗
             </a>
           </footer>
         </>

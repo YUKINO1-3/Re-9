@@ -287,7 +287,9 @@
   overflow: hidden;
   border: 1px solid #272a29;
   background: #141616;
+  color: inherit;
   grid-template-columns: 180px 1fr;
+  text-decoration: none;
   animation: reveal 600ms var(--delay) ease both;
   transition: border-color 200ms ease, transform 200ms ease;
 }
@@ -295,6 +297,11 @@
 .character-card:hover {
   transform: translateY(-3px);
   border-color: #494d4b;
+}
+
+.character-card:focus-visible {
+  outline: 2px solid #a62a2f;
+  outline-offset: 3px;
 }
 
 .character-card.featured {
@@ -451,7 +458,8 @@
   transition: border-color 180ms ease, color 180ms ease;
 }
 
-.character-link:hover {
+.character-card:hover .character-link,
+.character-card:focus-visible .character-link {
   border-color: #d38a8d;
   color: #d38a8d;
 }
@@ -666,6 +674,97 @@
     linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
     #0d0f0f;
   background-size: 100% 78px;
+}
+
+.character-profile-page {
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    #0d0f0f;
+  background-size: 100% 78px;
+}
+
+.profile-hero {
+  display: grid;
+  min-height: 720px;
+  padding: 150px max(24px, calc((100vw - 1180px) / 2)) 90px;
+  align-items: stretch;
+  gap: 70px;
+  background:
+    linear-gradient(90deg, rgba(8, 10, 10, 0.98), rgba(8, 10, 10, 0.68)),
+    radial-gradient(circle at 80% 30%, #4b3032, #151717 42%, #090a0a 75%);
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+}
+
+.profile-hero-copy {
+  align-self: center;
+}
+
+.profile-hero .back-link {
+  margin-bottom: 70px;
+}
+
+.profile-hero .role {
+  margin-top: 28px;
+}
+
+.profile-hero h1 {
+  max-width: 780px;
+  margin: 0;
+  color: #eee9df;
+  font-family: "Jim Nightshade", "Noto Serif SC", serif;
+  font-size: clamp(4rem, 8vw, 7.5rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+.profile-intro {
+  max-width: 690px;
+  margin: 38px 0 0;
+  color: #9b9d98;
+  font-size: 1rem;
+  line-height: 2;
+}
+
+.profile-portrait {
+  min-height: 520px;
+  border: 1px solid #343736;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.36);
+}
+
+.profile-facts {
+  display: grid;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 70px 24px;
+  gap: 1px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.profile-facts > div {
+  min-height: 112px;
+  padding: 24px;
+  border: 1px solid #292c2b;
+  background: #121414;
+}
+
+.profile-facts dt {
+  margin-bottom: 14px;
+  color: #6e716e;
+  font-family: "Courier New", monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+}
+
+.profile-facts dd {
+  margin: 0;
+  color: #d6d1c8;
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.profile-detail {
+  padding-top: 0;
 }
 
 .chapter-hero {
@@ -938,6 +1037,15 @@ footer a {
   .thread-grid {
     grid-template-columns: 1fr;
   }
+
+  .profile-hero {
+    gap: 35px;
+    grid-template-columns: minmax(0, 1fr) 280px;
+  }
+
+  .profile-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 680px) {
@@ -997,6 +1105,26 @@ footer a {
 
   .character-info {
     padding: 26px 24px 30px;
+  }
+
+  .profile-hero {
+    min-height: 0;
+    padding-top: 120px;
+    gap: 50px;
+    grid-template-columns: 1fr;
+  }
+
+  .profile-hero .back-link {
+    margin-bottom: 45px;
+  }
+
+  .profile-portrait {
+    min-height: 440px;
+  }
+
+  .profile-facts {
+    padding-top: 45px;
+    grid-template-columns: 1fr;
   }
 
   .story-hero {
